@@ -24,14 +24,12 @@ public class Member implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    //Member çağırıldığında Role bizimle birlikte gelmemeli, çünkü sistem yavaşlar, ekstra sqller çalıştığı için.
-    //Ama şimdi EAGER olarak tanımladığımızda ManyToMany ilişki için rollerinde gelmesini sağlıyoruz, normalde LAZYdir.
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "member_role", schema = "bank", joinColumns = @JoinColumn(name = "member_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();
 
-    //Memberın authoritieslerini nereden okuyacağını söyleyen method
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -48,25 +46,22 @@ public class Member implements UserDetails {
         return password;
     }
 
-    //Kullanıcımızın durumlarını anlatıyor 4 method, bunların herhangi bir false olursa kullanıcı sisteme giriş yapamaz.
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    //Accountu locklamak için banlamak için. false olursa hesabı banlanır.
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
-    //Maile tıklayıp accountu aktif olursa true olur.
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    //Bazen kullanıcılar sistemden belli bir süre silinmez ama durur, false olursa sisteme giriş yapamaz.
     @Override
     public boolean isEnabled() {
         return true;

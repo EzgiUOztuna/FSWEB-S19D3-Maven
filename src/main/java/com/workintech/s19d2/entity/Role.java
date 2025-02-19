@@ -19,9 +19,5 @@ public class Role implements GrantedAuthority {
     @Column(name = "authority")
     private String authority;
 
-    //Role üstünden membera gitmemize gerek kalmadığı için şuanda Uni-directional çalışıyoruz.
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "member_role", schema = "bank", joinColumns = @JoinColumn(name = "role_id"),
-//            inverseJoinColumns = @JoinColumn(name = "member_id"))
-//    private Member member;
+
 }
